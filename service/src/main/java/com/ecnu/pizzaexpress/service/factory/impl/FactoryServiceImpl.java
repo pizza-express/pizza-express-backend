@@ -8,6 +8,7 @@ import com.ecnu.pizzaexpress.service.deliver.impl.baidumap.BaiduMapApi;
 import com.ecnu.pizzaexpress.service.deliver.impl.baidumap.response.GeocoderResponse;
 import com.ecnu.pizzaexpress.service.deliver.impl.baidumap.response.Location;
 import com.ecnu.pizzaexpress.service.factory.IFactoryService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +45,11 @@ public class FactoryServiceImpl extends BaseServiceImpl implements IFactoryServi
     resetAddress(factory);
     factoryMapper.updateByPrimaryKey(factory);
     return true;
+  }
+
+  @Override
+  public List<Factory> findAll() {
+    return factoryMapper.selectAll();
   }
 
   private void resetAddress(Factory factory) {

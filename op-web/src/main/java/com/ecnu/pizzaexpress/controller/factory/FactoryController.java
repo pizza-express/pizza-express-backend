@@ -8,6 +8,7 @@ import com.ecnu.pizzaexpress.service.dishes.DishesWithContent;
 import com.ecnu.pizzaexpress.service.dishes.IDishesService;
 import com.ecnu.pizzaexpress.service.factory.IFactoryService;
 import java.math.BigDecimal;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,12 @@ public class FactoryController extends BaseController {
   public Factory createFactory(@RequestBody Factory factory) {
     factoryService.create(factory);
     return factory;
+  }
+
+  @RequestMapping(value = "", method = RequestMethod.GET)
+  @Authentication(Role.Admin)
+  public List<Factory> queryFactory() {
+    return factoryService.findAll();
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.GET)

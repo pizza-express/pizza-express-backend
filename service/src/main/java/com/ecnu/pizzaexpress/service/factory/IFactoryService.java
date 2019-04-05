@@ -1,6 +1,7 @@
 package com.ecnu.pizzaexpress.service.factory;
 
 import com.ecnu.pizzaexpress.model.Factory;
+import java.util.List;
 
 /**
  * Created by yerunjie on 2019-03-15
@@ -14,4 +15,6 @@ public interface IFactoryService {
   Factory findById(int id);
 
   boolean update(Factory factory);
+
+  List<Factory> findAll();
 }
