@@ -5,7 +5,11 @@ import com.ecnu.pizzaexpress.constants.Role;
 import com.ecnu.pizzaexpress.controller.BaseController;
 import com.ecnu.pizzaexpress.controller.common.LoginRequest;
 import com.ecnu.pizzaexpress.controller.common.LoginResponse;
+import com.ecnu.pizzaexpress.controller.common.RegisterRequest;
+import com.ecnu.pizzaexpress.controller.common.RegisterResponse;
 import com.ecnu.pizzaexpress.model.User;
+import com.ecnu.pizzaexpress.service.deliver.impl.baidumap.BaiduMapApi;
+import com.ecnu.pizzaexpress.service.deliver.impl.baidumap.response.Location;
 import com.ecnu.pizzaexpress.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,44 +27,55 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1/api/user")
 public class UserController extends BaseController {
 
-  @Autowired
-  private IUserService userService;
+    @Autowired
+    private IUserService userService;
+    private BaiduMapApi baiduMapApi;
 
-  @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-  @Authentication({Role.Admin, Role.User})
-  public User getUserById(@PathVariable("id") int id) {
-    User user = userService.findById(id);
-    return user;
-  }
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @Authentication({Role.Admin, Role.User})
+    public User getUserById(@PathVariable("id") int id) {
+        User user = userService.findById(id);
+        return user;
+    }
 
-  @RequestMapping("/login")
-  public LoginResponse login(@RequestBody LoginRequest request) {
-    User user = userService.findByAccount(request.getAccount());
-    if (user == null) {
-      throw new RuntimeException();
+    @RequestMapping("/login")
+    public LoginResponse login(@RequestBody LoginRequest request) {
+        User user = userService.findByAccount(request.getAccount());
+        if (user == null) {
+            throw new RuntimeException();
+        }
+        if (!user.getPassword().equals(request.getPassword())) {
+            throw new RuntimeException();
+        }
+        String token = tokenService.generateToken(Role.User, user.getId());
+        LoginResponse response = new LoginResponse();
+        response.setToken(token);
+        addCookie("token", token);
+        return response;
     }
-    if (!user.getPassword().equals(request.getPassword())) {
-      throw new RuntimeException();
-    }
-    String token = tokenService.generateToken(Role.User, user.getId());
-    LoginResponse response = new LoginResponse();
-    response.setToken(token);
-    addCookie("token", token);
-    return response;
-  }
 
-  @RequestMapping("/register")
-  public LoginResponse register(@RequestBody LoginRequest request) {
-    User user = userService.findByAccount(request.getAccount());
-    if (user == null) {
-      throw new RuntimeException();
+    @RequestMapping("/register")
+    public RegisterResponse register(@RequestBody RegisterRequest request) {
+        User user = new User();
+        user.setAccount(request.getAccount());
+        user.setPassword(request.getPassword());
+        user.setTelephone(request.getPhone());
+        Location location;
+        try {
+            location = baiduMapApi.geocoder(request.getAddress()).getResult().getLocation();
+            String lat = Double.toString(location.getLat());
+            String lng = Double.toString(location.getLng());
+            user.setAddress(lat + "," + lng);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (userService.findByAccount(request.getAccount()) != null) {
+            throw new RuntimeException();
+        }
+        int id = userService.Register(user);
+        String token = tokenService.generateToken(Role.User, id);
+        RegisterResponse response = new RegisterResponse();
+        response.setToken(token);
+        return response;
     }
-    if (!user.getPassword().equals(request.getPassword())) {
-      throw new RuntimeException();
-    }
-    String token = tokenService.generateToken(Role.User, user.getId());
-    LoginResponse response = new LoginResponse();
-    response.setToken(token);
-    return response;
-  }
 }

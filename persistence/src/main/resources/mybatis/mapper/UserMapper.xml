@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ecnu.pizzaexpress.mapper.UserMapper">
-  <resultMap id="BaseResultMap" type="com.ecnu.pizzaexpress.model.User">
-    <id column="id" jdbcType="INTEGER" property="id"/>
-    <result column="account" jdbcType="VARCHAR" property="account"/>
-    <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
-    <result column="qq" jdbcType="VARCHAR" property="qq"/>
-    <result column="wechat" jdbcType="VARCHAR" property="wechat"/>
-    <result column="password" jdbcType="VARCHAR" property="password"/>
-    <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
-    <result column="birthday" jdbcType="DATE" property="birthday"/>
-    <result column="address" jdbcType="LONGVARCHAR" property="address"/>
-  </resultMap>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <resultMap id="BaseResultMap" type="com.ecnu.pizzaexpress.model.User">
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="account" jdbcType="VARCHAR" property="account"/>
+        <result column="telephone" jdbcType="VARCHAR" property="telephone"/>
+        <result column="qq" jdbcType="VARCHAR" property="qq"/>
+        <result column="wechat" jdbcType="VARCHAR" property="wechat"/>
+        <result column="password" jdbcType="VARCHAR" property="password"/>
+        <result column="nick_name" jdbcType="VARCHAR" property="nickName"/>
+        <result column="birthday" jdbcType="DATE" property="birthday"/>
+        <result column="address" jdbcType="LONGVARCHAR" property="address"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete
     from user
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ecnu.pizzaexpress.model.User"
-    useGeneratedKeys="true">
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.ecnu.pizzaexpress.model.User"
+            useGeneratedKeys="true">
     insert into user (account, telephone, qq,
                       wechat, password, nick_name,
                       birthday, address)
@@ -27,7 +27,63 @@
             #{wechat,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR},
             #{birthday,jdbcType=DATE}, #{address,jdbcType=LONGVARCHAR})
   </insert>
-  <update id="updateByPrimaryKey" parameterType="com.ecnu.pizzaexpress.model.User">
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.ecnu.pizzaexpress.model.User"
+            useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="account != null">
+                account,
+            </if>
+            <if test="telephone != null">
+                telephone,
+            </if>
+            <if test="qq != null">
+                qq,
+            </if>
+            <if test="wechat != null">
+                wechat,
+            </if>
+            <if test="password != null">
+                password,
+            </if>
+            <if test="nick_name != null">
+                nick_name,
+            </if>
+            <if test="birthday != null">
+                birthday,
+            </if>
+            <if test="address != null">
+                address,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="telephone != null">
+                #{telephone,jdbcType=VARCHAR},
+            </if>
+            <if test="qq != null">
+                #{qq,jdbcType=VARCHAR},
+            </if>
+            <if test="wechat != null">
+                #{wechat,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="nick_name != null">
+                #{nickName,jdbcType=VARCHAR},
+            </if>
+            <if test="birthday != null">
+                #{birthday,jdbcType=DATE},
+            </if>
+            <if test="address != null">
+                #{address,jdbcType=LONGVARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.ecnu.pizzaexpress.model.User">
     update user
     set account   = #{account,jdbcType=VARCHAR},
         telephone = #{telephone,jdbcType=VARCHAR},
@@ -39,7 +95,7 @@
         address   = #{address,jdbcType=LONGVARCHAR}
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select id,
            account,
            telephone,
@@ -52,7 +108,7 @@
     from user
     where id = #{id,jdbcType=INTEGER}
   </select>
-  <select id="selectAll" resultMap="BaseResultMap">
+    <select id="selectAll" resultMap="BaseResultMap">
     select id,
            account,
            telephone,

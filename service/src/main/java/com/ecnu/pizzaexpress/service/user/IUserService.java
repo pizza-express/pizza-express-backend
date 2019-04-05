@@ -9,7 +9,9 @@ import com.ecnu.pizzaexpress.model.User;
  */
 public interface IUserService {
 
-  User findById(int id);
+    User findById(int id);
 
-  User findByAccount(String account);
+    User findByAccount(String account);
+
+    int Register(User user);
 }
