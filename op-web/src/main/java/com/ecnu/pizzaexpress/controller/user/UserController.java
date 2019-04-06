@@ -61,13 +61,8 @@ public class UserController extends BaseController {
         user.setPassword(request.getPassword());
         user.setTelephone(request.getPhone());
         Location location;
-        try {
-            location = baiduMapApi.geocoder(request.getAddress()).getResult().getLocation();
-            String lat = Double.toString(location.getLat());
-            String lng = Double.toString(location.getLng());
-            user.setAddress(lat + "," + lng);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (baiduMapApi.geocoder(request.getAddress()).getResult().getLocation() != null) {
+            user.setAddress(request.getAddress());
         }
         if (userService.findByAccount(request.getAccount()) != null) {
             throw new RuntimeException();
