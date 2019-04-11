@@ -1,6 +1,5 @@
 package com.ecnu.pizzaexpress.service.user.impl;
 
-import com.ecnu.pizzaexpress.dto.Token;
 import com.ecnu.pizzaexpress.mapper.UserMapper;
 import com.ecnu.pizzaexpress.model.User;
 import com.ecnu.pizzaexpress.service.base.BaseServiceImpl;
@@ -16,21 +15,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserServiceImpl extends BaseServiceImpl implements IUserService {
 
-    @Autowired
-    private UserMapper userMapper;
+  @Autowired
+  private UserMapper userMapper;
 
-    @Override
-    public User findById(int id) {
-        return userMapper.selectByPrimaryKey(id);
-    }
+  @Override
+  public User findById(int id) {
+    return userMapper.selectByPrimaryKey(id);
+  }
 
-    @Override
-    public User findByAccount(String account) {
-        return userMapper.findByAccount(account);
-    }
+  @Override
+  public User findByAccount(String account) {
+    return userMapper.findByAccount(account);
+  }
 
-    @Override
-    public int Register(User user) {
-        return userMapper.insertSelective(user);
-    }
+  @Override
+  public int Register(User user) {
+    return userMapper.insertSelective(user);
+  }
+
+  @Override
+  public int modifyUserInfo(User user) {
+    userMapper.updateByPrimaryKey(user);
+    return 1;
+  }
 }
