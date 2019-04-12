@@ -5,6 +5,7 @@ import com.ecnu.pizzaexpress.constants.Role;
 import com.ecnu.pizzaexpress.controller.BaseController;
 import com.ecnu.pizzaexpress.controller.common.LoginRequest;
 import com.ecnu.pizzaexpress.controller.common.LoginResponse;
+import com.ecnu.pizzaexpress.controller.common.PizzaExpressBaseResponse;
 import com.ecnu.pizzaexpress.controller.common.RegisterRequest;
 import com.ecnu.pizzaexpress.controller.common.RegisterResponse;
 import com.ecnu.pizzaexpress.model.User;
@@ -85,13 +86,16 @@ public class UserController extends BaseController {
 
   @RequestMapping("/modifyUserInfo")
   @Authentication({Role.User})
-  public int modifyUserInfo(@RequestBody User request) {
+  public PizzaExpressBaseResponse modifyUserInfo(@RequestBody User request) {
     int userId = getToken().getId();
     User user = getUserById(userId);
     user.setNickName(request.getNickName());
     user.setAddress(request.getAddress());
     user.setTelephone(request.getTelephone());
     userService.modifyUserInfo(user);
-    return 1;
+    PizzaExpressBaseResponse pizzaExpressBaseResponse = new PizzaExpressBaseResponse();
+    pizzaExpressBaseResponse.setErrorCode("0");
+    pizzaExpressBaseResponse.setErrorMessage("Success");
+    return pizzaExpressBaseResponse;
   }
 }
