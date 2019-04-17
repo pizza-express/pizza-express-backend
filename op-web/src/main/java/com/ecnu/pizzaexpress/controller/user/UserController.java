@@ -40,7 +40,7 @@ public class UserController extends BaseController {
   }
 
   @RequestMapping("/login")
-  public LoginResponse login(@RequestBody LoginRequest request) {
+  public LoginResponse login(@RequestParam LoginRequest request) {
     User user = userService.findByAccount(request.getAccount());
     if (user == null) {
       throw new RuntimeException();
