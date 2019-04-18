@@ -29,7 +29,7 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
   }
 
   @Override
-  public int Register(User user) {
+  public int register(User user) {
     return userMapper.insertSelective(user);
   }
 

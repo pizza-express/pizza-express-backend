@@ -68,7 +68,7 @@ public class UserController extends BaseController {
     if (userService.findByAccount(request.getAccount()) != null) {
       throw new RuntimeException();
     }
-    int id = userService.Register(user);
+    int id = userService.register(user);
     String token = tokenService.generateToken(Role.User, id);
     RegisterResponse response = new RegisterResponse();
     response.setToken(token);

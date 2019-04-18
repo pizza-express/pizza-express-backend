@@ -13,7 +13,7 @@ public interface IUserService {
 
   User findByAccount(String account);
 
-  int Register(User user);
+  int register(User user);
 
   int modifyUserInfo(User user);
 }
