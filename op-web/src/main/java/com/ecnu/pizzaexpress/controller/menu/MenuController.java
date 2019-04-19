@@ -24,7 +24,7 @@ public class MenuController extends BaseController {
   private IMenuService menuService;
 
   @RequestMapping(value = "", method = RequestMethod.GET)
-  @Authentication({Role.User})
+  @Authentication({Role.User, Role.Admin})
   public List<Dishes> createOrder() {
     return menuService.getMenu();
   }
