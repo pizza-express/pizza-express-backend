@@ -12,6 +12,7 @@ import com.ecnu.pizzaexpress.model.User;
 import com.ecnu.pizzaexpress.service.deliver.impl.baidumap.BaiduMapApi;
 import com.ecnu.pizzaexpress.service.deliver.impl.baidumap.response.Location;
 import com.ecnu.pizzaexpress.service.user.IUserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,6 +38,12 @@ public class UserController extends BaseController {
   public User getUserById(@PathVariable("id") int id) {
     User user = userService.findById(id);
     return user;
+  }
+
+  @RequestMapping(value = "", method = RequestMethod.GET)
+  @Authentication({Role.Admin, Role.User})
+  public List<User> findAll() {
+    return userService.findAll();
   }
 
   @RequestMapping("/login")

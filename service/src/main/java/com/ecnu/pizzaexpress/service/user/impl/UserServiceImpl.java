@@ -4,6 +4,7 @@ import com.ecnu.pizzaexpress.mapper.UserMapper;
 import com.ecnu.pizzaexpress.model.User;
 import com.ecnu.pizzaexpress.service.base.BaseServiceImpl;
 import com.ecnu.pizzaexpress.service.user.IUserService;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,5 +38,10 @@ public class UserServiceImpl extends BaseServiceImpl implements IUserService {
   public int modifyUserInfo(User user) {
     userMapper.updateByPrimaryKey(user);
     return 1;
+  }
+
+  @Override
+  public List<User> findAll() {
+    return userMapper.selectAll();
   }
 }
