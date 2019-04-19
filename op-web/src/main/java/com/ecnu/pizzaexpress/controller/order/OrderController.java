@@ -55,7 +55,7 @@ public class OrderController extends BaseController {
   }
 
   @RequestMapping(value = "", method = RequestMethod.GET)
-  @Authentication(Role.User)
+  @Authentication({Role.User,Role.Admin})
   public List<OrderVo> queryOrders(
       @RequestParam(value = "pageSize", defaultValue = "5") int pageSize,
       @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber) {

@@ -14,7 +14,7 @@ public interface OrderMapper {
 
   List<Order> selectAll();
 
-  List<Order> findByRequest(SearchOrderRequest request);
+  List<Order>  findByRequest(SearchOrderRequest request);
 
   int updateOrderInfo(Order record);
 
